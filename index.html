@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Peace Drink – Startup Journey</title>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', system-ui, sans-serif;
+    background: #faf9f5;
+    color: #1e2a2f;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  /* main app container */
+  .app-container {
+    width: 100%;
+    max-width: 580px;
+    background: transparent;
+  }
+
+  /* --- HOME SCREEN STYLES --- */
+  .home-screen {
+    background: white;
+    border-radius: 42px;
+    padding: 32px 24px 40px;
+    box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+
+  .home-emoji {
+    font-size: 4.5rem;
+    margin-bottom: 12px;
+  }
+
+  .home-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #2b6e3c, #4c9a6f);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .home-sub {
+    color: #5b6e6b;
+    font-size: 1rem;
+    border-bottom: 1px solid #e9e5da;
+    display: inline-block;
+    padding-bottom: 6px;
+    margin-bottom: 28px;
+  }
+
+  .home-description {
+    font-size: 0.95rem;
+    color: #2c4b3e;
+    background: #f1f9f4;
+    padding: 18px 20px;
+    border-radius: 32px;
+    margin: 20px 0 16px;
+    line-height: 1.5;
+    text-align: left;
+  }
+
+  .stats-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    background: #fefcf7;
+    border-radius: 28px;
+    padding: 16px 20px;
+    margin: 24px 0 28px;
+    border: 1px solid #f0eadb;
+  }
+
+  .preview-item {
+    text-align: left;
+  }
+
+  .preview-emoji {
+    font-size: 1.3rem;
+    margin-right: 8px;
+  }
+
+  .preview-label {
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #5b6e6b;
+    letter-spacing: 0.3px;
+  }
+
+  .preview-desc {
+    font-size: 0.75rem;
+    color: #8c9c98;
+    margin-top: 4px;
+  }
+
+  .home-start-btn {
+    background: linear-gradient(105deg, #2b6e3c, #3b8a52);
+    border: none;
+    width: 100%;
+    padding: 18px 20px;
+    border-radius: 60px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 6px 14px rgba(43, 110, 60, 0.3);
+  }
+
+  .home-start-btn:hover {
+    background: linear-gradient(105deg, #1f5a2e, #2f7545);
+    transform: scale(0.98);
+  }
+
+  .quote {
+    margin-top: 24px;
+    font-size: 0.7rem;
+    color: #b3c2bc;
+    font-style: italic;
+  }
+
+  /* ----- in-game styles (same as before but polished) ----- */
+  .wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px;
+  }
+
+  .level {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 6px 16px 6px 12px;
+    border-radius: 60px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .level-emoji { font-size: 1.6rem; }
+  .level-meta { display: flex; flex-direction: column; }
+  .level-tag { font-size: 0.65rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; }
+  .level-name { font-size: 0.9rem; font-weight: 800; color: #1f2937; }
+
+  .restart {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    padding: 8px 18px;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .restart:hover { border-color: #2b9348; color: #2b6e3c; background: #f7fef9; }
+
+  .stats-card {
+    background: white;
+    border-radius: 28px;
+    padding: 20px 22px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 24px;
+  }
+
+  .stat-row { display: flex; flex-direction: column; gap: 6px; }
+  .stat-top { display: flex; align-items: center; justify-content: space-between; }
+  .stat-label { font-size: 0.8rem; font-weight: 700; color: #374151; display: flex; align-items: center; gap: 6px; }
+  .stat-val { font-size: 0.9rem; font-weight: 800; }
+  .stat-val.cash { color: #2b6e3c; }
+  .stat-val.users { color: #6b7280; }
+  .stat-val.vibe { color: #e67e22; }
+  .stat-val.runway { color: #c0392b; }
+
+  .bar {
+    height: 6px;
+    background: #f0f0ea;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+  .bar-fill.cash { background: #2b6e3c; }
+  .bar-fill.users { background: #9ca3af; }
+  .bar-fill.vibe { background: linear-gradient(90deg, #e67e22, #f39c12); }
+  .bar-fill.runway { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+
+  .scene-card {
+    background: white;
+    border-radius: 32px;
+    padding: 26px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0ede4;
+  }
+
+  .scene-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .scene-emoji { font-size: 2rem; }
+  .scene-divider { width: 2px; height: 30px; background: #e5e0d0; }
+  .scene-title { font-size: 1.2rem; font-weight: 800; color: #1e2a2f; line-height: 1.3; }
+
+  .scene-body {
+    color: #4a5b56;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+  }
+
+  .move-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #e67e22;
+    font-weight: 800;
+    margin-bottom: 16px;
+  }
+
+  .choice {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    text-align: left;
+    background: #fefcf8;
+    border: 1px solid #efeadf;
+    border-radius: 20px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    font: inherit;
+    font-size: 0.9rem;
+    color: #1f2a24;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .choice:hover {
+    border-color: #2b9348;
+    background: #f6fcf4;
+    transform: translateX(4px);
+  }
+
+  .choice-emoji { font-size: 1.4rem; flex-shrink: 0; }
+  .choice-text { flex: 1; line-height: 1.4; }
+  .choice-chev { color: #b9c2b0; font-size: 1.2rem; }
+
+  .ending-hero {
+    font-size: 3.6rem;
+    text-align: center;
+    margin: 10px 0 16px;
+  }
+  .ending-title {
+    font-size: 1.7rem;
+    font-weight: 800;
+    text-align: center;
+    color: #2b6e3c;
+    margin-bottom: 14px;
+  }
+  .ending-text {
+    color: #5b6e68;
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  .cta {
+    width: 100%;
+    background: linear-gradient(90deg, #2b6e3c, #4c9a6f);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 16px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  button {
+    font-family: inherit;
+  }
+</style>
+</head>
+<body>
+<div class="app-container" id="appRoot">
+  <!-- home screen (visible by default) -->
+  <div id="homeScreen" class="home-screen">
+    <div class="home-emoji">🧘‍♂️💚</div>
+    <div class="home-title">Peace Drink</div>
+    <div class="home-sub">Startup Journey</div>
+    <div class="home-description">
+      Make real decisions. Watch real consequences.<br>
+      Try not to run out of money.
+    </div>
+
+    <div class="stats-preview">
+      <div class="preview-item">
+        <div><span class="preview-emoji">💰</span><span class="preview-label">Cash</span></div>
+        <div class="preview-desc">Don't run out</div>
+      </div>
+      <div class="preview-item">
+        <div><span class="preview-emoji">👥</span><span class="preview-label">Users</span></div>
+        <div class="preview-desc">They keep you alive</div>
+      </div>
+      <div class="preview-item">
+        <div><span class="preview-emoji">💖</span><span class="preview-label">Vibe</span></div>
+        <div class="preview-desc">Team morale matters</div>
+      </div>
+      <div class="preview-item">
+        <div><span class="preview-emoji">📅</span><span class="preview-label">Runway</span></div>
+        <div class="preview-desc">Months left to live</div>
+      </div>
+    </div>
+
+    <button id="startGameBtn" class="home-start-btn">
+      🌱 Let's Go
+      <span style="font-size:1.3rem;">→</span>
+    </button>
+    <div class="quote">No experience required. Failure encouraged.</div>
+  </div>
+
+  <!-- game container (hidden until start) -->
+  <div id="gameContainer" class="hidden"></div>
+</div>
+
+<script>
+  // ---------- GAME STATE ----------
+  let state = { cash: 10, users: 0, vibe: 50, runway: 3 };
+  let currentScene = 'start';
+
+  const max = { cash: 200, users: 20000, vibe: 100, runway: 12 };
+
+  const levels = {
+    start:         { name: 'CBD Dreamer',   emoji: '🌿' },
+    earlyTraction: { name: 'Brew Master',   emoji: '🍵' },
+    crisis:        { name: 'Stressed Out',  emoji: '😰' },
+    growth:        { name: 'Zen Wave',      emoji: '🌊' },
+    finale:        { name: 'Peace Maker',   emoji: '☮️' }
+  };
+
+  const story = {
+    start: {
+      emoji: '🍃',
+      title: 'Day 1. No Going Back.',
+      body: "You are Bob, 42. You rage-quit your corporate job after one pointless meeting too many. Your dream: create a CBD drink to help people relax, find peace, and unlock their imagination. You have $10,000 in savings. Sarah, an old friend, joins you. No formula yet. Just a vision and a lot of hope. What's your first move?",
+      choices: [
+        { emoji: '🧪', text: 'Spend a month with Sarah crafting the perfect calming recipe',
+          effects: { users: 50, vibe: 15, cash: -2, runway: -1 }, next: 'earlyTraction' },
+        { emoji: '📸', text: 'Post aesthetic Instagram stories about the "slow life startup"',
+          effects: { users: 600, vibe: 5, cash: -1, runway: -1 }, next: 'earlyTraction' },
+        { emoji: '🤝', text: 'Visit local hemp farmers to find the best organic CBD',
+          effects: { users: 100, vibe: 10, cash: -3, runway: -1 }, next: 'earlyTraction' }
+      ]
+    },
+    earlyTraction: {
+      emoji: '📈',
+      title: 'Month 2. First Sips.',
+      body: "Your first handmade batch sold out in 3 days thanks to word of mouth. Customers message you: 'This drink helped me meditate.' A local vegan café wants to stock your cans. Sarah is excited but your savings are draining fast.",
+      choices: [
+        { emoji: '🏭', text: 'Partner with a small local brewery to scale production',
+          effects: { cash: -8, users: 1200, vibe: -5, runway: 1 }, next: 'crisis' },
+        { emoji: '📦', text: 'Focus on direct-to-consumer online sales with nice packaging',
+          effects: { users: 800, vibe: 5, cash: -4, runway: -1 }, next: 'crisis' },
+        { emoji: '🧘', text: 'Host "CBD chill nights" to build a loyal community',
+          effects: { users: 300, vibe: 20, cash: -2, runway: -1 }, next: 'crisis' }
+      ]
+    },
+    crisis: {
+      emoji: '🔥',
+      title: 'Month 5. Regulatory Meltdown.',
+      body: "The health department shows up. A supplier messes up your delivery. An influencer complains 'it doesn't do anything'. Sarah is panicking. Local media writes: 'CBD startup too fast, too furious.' Your vibe is crashing.",
+      choices: [
+        { emoji: '⚖️', text: 'Hire a CBD lawyer to make everything 100% compliant',
+          effects: { cash: -15, vibe: 10, users: 200, runway: -1 }, next: 'growth' },
+        { emoji: '💬', text: 'Post a transparent apology and offer free replacements',
+          effects: { cash: -4, users: -300, vibe: 20, runway: -1 }, next: 'growth' },
+        { emoji: '🛡️', text: 'Cut costs, fire the freelancer, work only with Sarah',
+          effects: { cash: 8, vibe: -20, users: -100, runway: -1 }, next: 'growth' }
+      ]
+    },
+    growth: {
+      emoji: '🚀',
+      title: 'Month 8. The Wellness Boom.',
+      body: "An article in 'Vogue' and a feature on a popular podcast. Orders explode. An impact fund offers $600k for 15%. Sarah whispers that a big soda brand is sniffing around. Your nights are short, but the dream is real.",
+      choices: [
+        { emoji: '💰', text: 'Take the investment, hire a team, scale massively',
+          effects: { cash: 150, runway: 8, vibe: -5, users: 5000 }, next: 'finale' },
+        { emoji: '🌱', text: 'Stay independent, grow slow but peaceful',
+          effects: { cash: 20, vibe: 25, users: 1800, runway: 2 }, next: 'finale' },
+        { emoji: '🤝', text: 'Partner with yoga studios & spas for calm B2B sales',
+          effects: { cash: 15, users: 1200, vibe: 10, runway: 1 }, next: 'finale' }
+      ]
+    },
+    finale: {
+      emoji: '☯️',
+      title: 'Month 12. The Choice of Peace.',
+      body: "A US giant offers $9 million to buy Peace Drink. Sarah looks at you: 'Bob, it's your baby. But we're exhausted.' You feel the world still needs more calm. What do you do?",
+      choices: [
+        { emoji: '💸', text: 'Sell, take the money and open a hemp farm in the countryside',
+          effects: {}, next: 'end_exit' },
+        { emoji: '🦄', text: 'Refuse the exit, aim to become the #1 slow-life brand',
+          effects: {}, next: 'end_judge' },
+        { emoji: '🔀', text: 'Pivot to a new CBD + adaptogenic mushroom drink (risky)',
+          effects: { cash: -50, users: -2000, vibe: -15 }, next: 'end_judge' }
+      ]
+    },
+    end_exit:  { ending: true, type: 'exit' },
+    end_judge: { ending: true, type: 'judge' }
+  };
+
+  function pickEnding(scene) {
+    if (state.cash <= 0)   return { emoji: '💔', title: 'Quiet Bankruptcy', text: "Bank account hits zero. Sarah becomes a yoga teacher. You go back to a corporate job, but you still brew your own CBD drink at night. A bittersweet dream." };
+    if (state.vibe <= 0)   return { emoji: '🌀', title: 'Lost Soul', text: "Fights, sleepless nights… your friendship with Sarah breaks. Peace Drink dies because you lost each other. That hurts more than the money." };
+    if (state.runway <= 0) return { emoji: '⏳', title: "Time's Up", text: "You loved every day, but cash ran out before product-market fit. You share one last can with Sarah in silence. Respectable failure." };
+    if (scene.type === 'exit') return { emoji: '🏝️', title: 'Acquired for $9M', text: "The deal closes under an apple tree. You open an ethical hemp farm. Sarah runs the brand inside the giant company. The world drinks a little more zen because of you." };
+    if (state.users >= 8000 && state.cash >= 100) return { emoji: '🦄', title: 'Peace Unicorn', text: "Peace Drink becomes Europe's #1 wellness brand. Forbes calls you 'the druid of business'. You laugh – your real success is never betraying your dream." };
+    if (state.users >= 2500) return { emoji: '📊', title: 'Ethical & Profitable', text: "No unicorn, no bankruptcy. A beautiful company with 30 employees, recycled cans, and happy faces. The hardest part? Staying Bob. And you did it." };
+    return { emoji: '🔄', title: 'Acqui-hired Quietly', text: "A big food company buys your recipe. The project gets diluted, but you and Sarah walk away with experience. She starts her own brand tomorrow." };
+  }
+
+  function applyEffects(eff) {
+    for (let k in eff) state[k] += eff[k];
+    if (state.cash < 0) state.cash = 0;
+    if (state.users < 0) state.users = 0;
+    if (state.vibe < 0) state.vibe = 0;
+    if (state.vibe > 100) state.vibe = 100;
+    if (state.runway < 0) state.runway = 0;
+  }
+
+  function fmtUsers(n) {
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    return n.toString();
+  }
+
+  function pct(val, maxVal) {
+    let p = (val / maxVal) * 100;
+    if (p > 100) p = 100;
+    if (p < 0) p = 0;
+    return p;
+  }
+
+  // UI components
+  function headerHTML() {
+    const lv = levels[currentScene] || levels.start;
+    return `
+      <div class="header">
+        <div class="level">
+          <div class="level-emoji">${lv.emoji}</div>
+          <div class="level-meta">
+            <span class="level-tag">Founder Level</span>
+            <span class="level-name">${lv.name}</span>
+          </div>
+        </div>
+        <button class="restart" onclick="gameRestart()">🔄 Restart</button>
+      </div>`;
+  }
+
+  function statsHTML() {
+    return `
+      <div class="stats-card">
+        <div class="stats-grid">
+          <div class="stat-row">
+            <div class="stat-top"><span class="stat-label">💰 Cash</span><span class="stat-val cash">$${state.cash}k</span></div>
+            <div class="bar"><div class="bar-fill cash" style="width:${pct(state.cash, max.cash)}%"></div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-top"><span class="stat-label">👥 Users</span><span class="stat-val users">${fmtUsers(state.users)}</span></div>
+            <div class="bar"><div class="bar-fill users" style="width:${pct(state.users, max.users)}%"></div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-top"><span class="stat-label">💖 Vibe</span><span class="stat-val vibe">${state.vibe}%</span></div>
+            <div class="bar"><div class="bar-fill vibe" style="width:${state.vibe}%"></div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-top"><span class="stat-label">📅 Runway</span><span class="stat-val runway">${state.runway}mo</span></div>
+            <div class="bar"><div class="bar-fill runway" style="width:${pct(state.runway, max.runway)}%"></div></div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderGame() {
+    const scene = story[currentScene];
+    if (!scene) return;
+
+    if (state.cash <= 0 || state.vibe <= 0 || state.runway <= 0) {
+      renderEndingScreen(pickEnding(scene));
+      return;
+    }
+    if (scene.ending) {
+      renderEndingScreen(pickEnding(scene));
+      return;
+    }
+
+    const gameContainer = document.getElementById('gameContainer');
+    gameContainer.innerHTML = `
+      <div class="wrap">
+        ${headerHTML()}
+        ${statsHTML()}
+        <div class="scene-card">
+          <div class="scene-title-row">
+            <span class="scene-emoji">${scene.emoji}</span>
+            <span class="scene-divider"></span>
+            <span class="scene-title">${scene.title}</span>
+          </div>
+          <p class="scene-body">${scene.body}</p>
+          <div class="move-label">🌱 Your Move</div>
+          <div id="dynamicChoices"></div>
+        </div>
+      </div>
+    `;
+
+    const choicesDiv = document.getElementById('dynamicChoices');
+    scene.choices.forEach(c => {
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.innerHTML = `<span class="choice-emoji">${c.emoji}</span>
+                       <span class="choice-text">${c.text}</span>
+                       <span class="choice-chev">›</span>`;
+      btn.onclick = () => {
+        applyEffects(c.effects);
+        currentScene = c.next;
+        renderGame();
+      };
+      choicesDiv.appendChild(btn);
+    });
+  }
+
+  function renderEndingScreen(endingData) {
+    const gameContainer = document.getElementById('gameContainer');
+    gameContainer.innerHTML = `
+      <div class="wrap">
+        ${headerHTML()}
+        ${statsHTML()}
+        <div class="scene-card">
+          <div class="ending-hero">${endingData.emoji}</div>
+          <h2 class="ending-title">${endingData.title}</h2>
+          <p class="ending-text">${endingData.text}</p>
+          <button class="cta" id="playAgainBtn">🌿 Play Again</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('playAgainBtn')?.addEventListener('click', () => {
+      resetGameAndShowHome();
+    });
+  }
+
+  function resetGameAndShowHome() {
+    // reset state
+    state = { cash: 10, users: 0, vibe: 50, runway: 3 };
+    currentScene = 'start';
+    const homeDiv = document.getElementById('homeScreen');
+    const gameDiv = document.getElementById('gameContainer');
+    homeDiv.classList.remove('hidden');
+    gameDiv.classList.add('hidden');
+    gameDiv.innerHTML = '';
+  }
+
+  function startGame() {
+    // reset fresh game
+    state = { cash: 10, users: 0, vibe: 50, runway: 3 };
+    currentScene = 'start';
+    const homeDiv = document.getElementById('homeScreen');
+    const gameDiv = document.getElementById('gameContainer');
+    homeDiv.classList.add('hidden');
+    gameDiv.classList.remove('hidden');
+    renderGame();
+  }
+
+  // global restart from inside game
+  window.gameRestart = function() {
+    resetGameAndShowHome();
+  };
+
+  // attach event listeners after DOM ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const startBtn = document.getElementById('startGameBtn');
+    if (startBtn) startBtn.addEventListener('click', startGame);
+  });
+</script>
+</body>
+</html>
